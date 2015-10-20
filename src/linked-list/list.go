@@ -66,9 +66,33 @@ func (l *List) Tail() *Node {
 }
 
 func (l *List) Append(v interface{}) {
+	n := NewNode(v)
+	if l == nil || l.IsEmpty() {
+		l.head = n
+		l.tail = n
+		l.length = 1
+		return
+	}
+	oldTail := l.tail
+	l.tail.next = n
+	n.prev = oldTail
+	l.tail = n
+	l.length++
 }
 
 func (l *List) Prepend(v interface{}) {
+	n := NewNode(v)
+	if l == nil || l.IsEmpty() {
+		l.head = n
+		l.tail = n
+		l.length = 1
+		return
+	}
+	oldHead = l.head
+	l.head.prev = n
+	n.next = oldHead
+	l.head = n
+	l.length++
 }
 
 func (l *List) Add(v interface{}, index int) error {
