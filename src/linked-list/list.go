@@ -100,6 +100,9 @@ func (l *List) Add(v interface{}, index int) error {
 }
 
 func (l *List) Get(index int) (interface{}, error) {
+	if l.Length() <= index {
+		return nil, nil
+	}
 	return nil, nil
 }
 
