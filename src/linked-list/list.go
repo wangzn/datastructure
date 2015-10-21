@@ -1,6 +1,8 @@
 package list
 
-import ()
+import (
+	"errors"
+)
 
 type Node struct {
 	value interface{}
@@ -96,30 +98,115 @@ func (l *List) Prepend(v interface{}) {
 }
 
 func (l *List) Add(v interface{}, index int) error {
+	if index >= l.Length() {
+		return errors.New("Index out of range")
+	}
+	n := NewNode(v)
+
+	if l.IsEmpty() {
+		l.head = n
+		l.tail = n
+		l.length = 1
+		return nil
+	}
+	i, err := l.Get(index)
+	if err != nil {
+		return err
+	}
+	j := i.next
+	i.next = n
+	n.prev = i
+	if j != nil {
+		n.next = j
+		j.prev = n
+	} else {
+		l.tail = n
+	}
+	l.length++
+
 	return nil
 }
 
-func (l *List) Get(index int) (interface{}, error) {
+func (l *List) Get(index int) (*Node, error) {
 	if l.Length() <= index {
-		return nil, nil
+		return nil, errors.New("Index out of range")
 	}
-	return nil, nil
+	if l == nil || l.IsEmpty() {
+		return nil, errors.New("List is empty")
+	}
+	p := l.head
+	for i := 0; i < index; i++ {
+		p = p.next
+	}
+	return p, nil
 }
 
 func (l *List) Find(n *Node) (int, error) {
 	return 0, nil
 }
 
-func (l *List) Remove(v interface{}) bool {
-	return false
+func (l *List) Remove(v interface{}) int {
+	if l == nil || l.IsEmpty() {
+		return -1
+	}
+	count := 0
+	for n := l.head; n != nil; n = n.next {
+		if n.value == v {
+			if n.prev == nil {
+				//is head
+				l.head = n.next
+				if n.next == nil {
+					//is also tail
+					l.tail = nil
+					l.length = 0
+					return 1
+				}
+				n.next.prev = nil
+			} else if n.next == nil {
+				//is tail but at least have two nodes
+				l.tail = n.prev
+				n.prev.next = nil
+			} else {
+				n.prev.next = n.next
+				n.next.prev = n.prev
+			}
+			l.length--
+			count++
+		}
+	}
+	return count
 }
 
-func (l *List) Pop() (interface{}, error) {
-	return nil, nil
+func (l *List) Pop() (*Node, error) {
+	if l == nil || l.IsEmpty() {
+		return nil, errors.New("List is empty")
+	}
+	n := l.tail
+	if l.Length() == 1 {
+		l.head = nil
+		l.tail = nil
+	} else {
+		l.tail = n.prev
+		l.tail.next = nil
+	}
+	l.length--
+	return n, nil
 }
 
-func (l *List) Shift() (interface{}, error) {
-	return nil, nil
+func (l *List) Shift() (*Node, error) {
+	if l == nil || l.IsEmpty() {
+		return nil, errors.New("List is empty")
+	}
+	n := l.head
+	if l.Length() == 1 {
+		l.head = nil
+		l.tail = nil
+	} else {
+		l.head = n.next
+		l.head.prev = nil
+	}
+	l.length--
+	return n, nil
 }
 
 func (l *List) Clear() {
