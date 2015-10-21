@@ -216,6 +216,19 @@ func (l *List) Clear() {
 }
 
 func (l *List) Concat(ll *List) {
+	if ll == nil || ll.IsEmpty() {
+		return
+	}
+	if l == nil || l.IsEmpty() {
+		l.head = ll.head
+		l.tail = ll.tail
+		l.length = ll.length
+	} else {
+		l.tail.next = ll.head
+		ll.head.prev = l.tail
+		l.tail = ll.tail
+		l.length += ll.length
+	}
 }
 
 func (l *List) Walk(f func(n *Node)) {
