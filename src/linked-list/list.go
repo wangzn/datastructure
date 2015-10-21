@@ -102,7 +102,6 @@ func (l *List) Add(v interface{}, index int) error {
 		return errors.New("Index out of range")
 	}
 	n := NewNode(v)
-
 	if l.IsEmpty() {
 		l.head = n
 		l.tail = n
@@ -123,7 +122,6 @@ func (l *List) Add(v interface{}, index int) error {
 		l.tail = n
 	}
 	l.length++
-
 	return nil
 }
 
