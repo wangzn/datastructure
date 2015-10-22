@@ -2,6 +2,7 @@ package list
 
 import (
 	"errors"
+	"fmt"
 )
 
 type Node struct {
@@ -22,11 +23,11 @@ func NewNode(v interface{}) *Node {
 	}
 }
 
-func NewList(n *Node) *List {
+func NewList() *List {
 	return &List{
-		head:   n,
-		tail:   n,
-		length: 1,
+		head:   nil,
+		tail:   nil,
+		length: 0,
 	}
 }
 
@@ -49,6 +50,20 @@ func (n *Node) Next() *Node {
 		return nil
 	}
 	return n.next
+}
+
+func (n *Node) Print() {
+	if n != nil {
+		if n.prev == nil {
+			fmt.Print("|")
+		}
+		fmt.Print(n.value)
+		if n.next != nil {
+			fmt.Print("->")
+		} else {
+			fmt.Println("|")
+		}
+	}
 }
 
 func (l *List) Length() int {
@@ -90,7 +105,7 @@ func (l *List) Prepend(v interface{}) {
 		l.length = 1
 		return
 	}
-	oldHead = l.head
+	oldHead := l.head
 	l.head.prev = n
 	n.next = oldHead
 	l.head = n
@@ -233,4 +248,10 @@ func (l *List) Walk(f func(n *Node)) {
 	for node := l.head; node != nil; node = node.next {
 		f(node)
 	}
+}
+
+func (l *List) Print() {
+	l.Walk(func(n *Node) {
+		n.Print()
+	})
 }
