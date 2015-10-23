@@ -34,6 +34,10 @@ func (i *item) Print() {
 	fmt.Println("----------")
 }
 
+func (h *HashTable) Size() int {
+	return h.size
+}
+
 func (h *HashTable) Get(key string) (interface{}, error) {
 	pos, err := h.getPosition(key)
 	if err != nil {
@@ -87,6 +91,7 @@ func (h *HashTable) Del(key string) error {
 	if r <= 0 {
 		return errors.New("Remove value fail in list")
 	}
+	h.size = h.size - r
 	return nil
 }
 
