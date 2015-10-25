@@ -19,7 +19,7 @@ func New() *Stack {
 }
 
 func (s *Stack) IsEmpty() bool {
-	return s.length == 0
+	return s.Length() == 0
 }
 
 func (s *Stack) Length() int {
