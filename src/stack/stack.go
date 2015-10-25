@@ -48,3 +48,12 @@ func (s *Stack) Pop() (interface{}, error) {
 	s.length--
 	return i, nil
 }
+
+func (s *Stack) Peek() (interface{}, error) {
+	if s.Length() == 0 {
+		return nil, errors.New("Stack is empty")
+	}
+	s.Lock()
+	defer s.Unlock()
+	return s.data[0], nil
+}

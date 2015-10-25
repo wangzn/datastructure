@@ -21,6 +21,10 @@ func TestMain(t *testing.T) {
 		t.Error("length error after pop")
 	}
 	v, err = s.Pop()
+	v, err = s.Peek()
+	if v != 2 {
+		t.Error("Peek value error")
+	}
 	v, err = s.Pop()
 	v, err = s.Pop()
 	v, err = s.Pop()
