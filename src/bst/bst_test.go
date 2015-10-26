@@ -1,6 +1,7 @@
 package bst
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -20,6 +21,10 @@ func TestMain(t *testing.T) {
 	tree.Insert(1)
 	tree.Insert(7)
 	tree.Insert(5)
+	str := tree.Serialize()
+	fmt.Println(str)
+	tree2 := Deserialize(str)
+	fmt.Println(tree2.Serialize())
 	if tree.Size() != 6 {
 		t.Error("Size error after insert")
 	}
@@ -33,6 +38,20 @@ func TestMain(t *testing.T) {
 	if l.Value() != 4 || r.Value() != 7 {
 		t.Error("Tree node value error", l.Value(), r.Value())
 	}
+	if tree2.Size() != 6 {
+		t.Error("Deserialized tree size error after insert")
+	}
+	if tree2.Search(2) != false {
+		t.Error("Deserialized tree search non-exist value fail")
+	}
+	if tree2.Search(7) == false {
+		t.Error("Deserialized tree search exist value fail")
+	}
+	l, r = tree2.Head().Child()
+	if l.Value() != 4 || r.Value() != 7 {
+		t.Error("Tree node value error", l.Value(), r.Value())
+	}
+
 	tree.Delete(2)
 	if tree.Size() != 6 {
 		t.Error("Size error after non-exist value delete")

@@ -2,6 +2,9 @@ package bst
 
 import (
 	"fmt"
+	"math"
+	"strconv"
+	"strings"
 )
 
 type Node struct {
@@ -79,6 +82,10 @@ func Walk(h *Node, f func(n *Node)) {
 
 func (t *Tree) Size() int {
 	return t.size
+}
+
+func (t *Tree) Head() *Node {
+	return t.head
 }
 
 func (t *Tree) Insert(i int) {
@@ -188,4 +195,89 @@ func (t *Tree) Delete(i int) bool {
 		}
 	}
 	return false
+}
+
+func (t *Tree) Serialize() string {
+	data := make([]string, 0)
+	if t == nil || t.head == nil {
+		return ""
+	}
+	nodes := t.ToSlice()
+	for _, v := range nodes {
+		if v != nil {
+			data = append(data, strconv.Itoa(v.value))
+		} else {
+			data = append(data, "")
+		}
+	}
+	return strings.Join(data, ",")
+}
+
+func (t *Tree) ToSlice() []*Node {
+	data := make([]*Node, 0)
+	for i := 0; int(math.Pow(2, float64(i))) < t.Size(); i++ {
+		if i == 0 {
+			data = append(data, t.head)
+			data = append(data, t.head.left)
+			data = append(data, t.head.right)
+			continue
+		}
+		for j := math.Pow(2, float64(i)) - 1; j < math.Pow(2, float64(i+1))-1; j++ {
+			if int(j) >= t.Size() {
+				break
+			}
+			if data[int(j)] != nil {
+				data = append(data, data[int(j)].left)
+				data = append(data, data[int(j)].right)
+			} else {
+				data = append(data, nil)
+				data = append(data, nil)
+			}
+		}
+	}
+	return data
+}
+
+func Deserialize(s string) *Tree {
+	nodes := ToNodes(s)
+	if len(nodes) == 0 {
+		return nil
+	}
+	head := nodes[0]
+	head.left = nodes[1]
+	head.right = nodes[2]
+	t := NewTree(head)
+	var n *Node
+	var parrent int
+	for i := 1; i < len(nodes)-1; i++ {
+		n = nodes[i]
+		if n != nil {
+			t.size++
+			parrent = int((i - 1) / 2)
+			n.parrent = nodes[parrent]
+			if i < (len(nodes)+1)/2 {
+				n.left = nodes[2*i+1]
+				n.right = nodes[2*i+2]
+			}
+		}
+	}
+	return t
+}
+
+func ToNodes(s string) []*Node {
+	nodes := make([]*Node, 0)
+	values := strings.Split(s, ",")
+	var n *Node
+	for _, v := range values {
+		if v == "" {
+			n = nil
+		} else {
+			value, _ := strconv.Atoi(v)
+			n = &Node{
+				value: value,
+			}
+		}
+		nodes = append(nodes, n)
+	}
+	return nodes
 }
