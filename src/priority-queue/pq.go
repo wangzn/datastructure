@@ -1,7 +1,11 @@
 package pq
 
 import (
+	"errors"
+	"sync"
+
 	"github.com/wangzn/datastructure/src/heap"
+	"github.com/wangzn/datastructure/src/queue"
 )
 
 type Item struct {
@@ -10,6 +14,8 @@ type Item struct {
 }
 
 type PQ struct {
+	l1   sync.Mutex
+	l2   sync.Mutex
 	data *heap.Heap
 }
 
@@ -36,6 +42,8 @@ func NewMaxPQ() *PQ {
 }
 
 func (pq *PQ) Insert(v interface{}, pri int) {
+	pq.l1.Lock()
+	defer pq.l1.Unlock()
 	i := Item{
 		value:    v,
 		priority: pri,
@@ -43,11 +51,46 @@ func (pq *PQ) Insert(v interface{}, pri int) {
 	pq.data.Insert(i)
 }
 
-func (pq *PQ) Extract() (interface{}, int) {
-	i := pq.data.Extract().(Item)
-	return i.value, i.priority
+func (pq *PQ) Length() int {
+	pq.l1.Lock()
+	defer pq.l1.Unlock()
+	return pq.data.Length()
 }
 
-func (pq *PQ) Length() int {
-	return pq.data.Length()
+func (pq *PQ) IsEmpty() bool {
+	return pq.Length() == 0
+}
+
+func (pq *PQ) Extract() (Item, error) {
+	if pq.IsEmpty() {
+		return Item{}, errors.New("Queue is empty")
+	}
+	pq.l1.Lock()
+	defer pq.l1.Unlock()
+	i := pq.data.Extract().(Item)
+	return i, nil
+}
+
+func (pq *PQ) ChangePriority(v interface{}, pri int) bool {
+	pq.l2.Lock()
+	defer pq.l2.Unlock()
+	found := false
+	q := queue.New()
+	item, err := pq.Extract()
+
+	for err == nil {
+		q.Push(item)
+		if item.value == v {
+			found = true
+			break
+		}
+		item, err = pq.Extract()
+	}
+	item.priority = pri
+	pq.data.Insert(item)
+	for q.Length() > 0 {
+		j, _ := q.Shift()
+		pq.data.Insert(j.(heap.Item))
+	}
+	return found
 }
