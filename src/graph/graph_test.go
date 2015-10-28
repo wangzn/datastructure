@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestMain(t *testing.T) {
+func TestSimpleGraph(t *testing.T) {
 	g := NewGraph()
 	if g.VertexCount() != 0 {
 		t.Error("Init count fail")
@@ -20,4 +20,30 @@ func TestMain(t *testing.T) {
 	}
 	g.AddEdge(1, 2, 12)
 	g.AddEdge(1, 3, 13)
+	if g.IsEdge(2, 3) {
+		t.Error("Invalid edge")
+	}
+	if !g.IsEdge(1, 3) {
+		t.Error("Is edge check fail")
+	}
+	if g.EdgeCount() != 2 {
+		t.Error("Edge count error")
+	}
+	v, err := g.GetEdgeValue(1, 3)
+	if err != nil {
+		t.Error("Get edge value error", err)
+	}
+	if v != 13 {
+		t.Error("Get invalid edge value", v)
+	}
+	err = g.RemoveEdge(1, 3)
+	if err != nil {
+		t.Error("Remove edge error", err)
+	}
+	if g.IsEdge(1, 3) {
+		t.Error("Is edge error after removing")
+	}
+	if g.EdgeCount() != 1 {
+		t.Error("Edge count error after removing")
+	}
 }

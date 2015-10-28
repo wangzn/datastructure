@@ -17,7 +17,7 @@ type Edge struct {
 
 type Graph struct {
 	edges      map[VertexId]map[VertexId]int
-	edgesCount int
+	edgeCount  int
 	isDirected bool
 }
 
@@ -90,7 +90,7 @@ func (g *Graph) AddEdge(from, to VertexId, value int) error {
 	if !g.isDirected {
 		g.edges[to][from] = value
 	}
-	g.edgesCount++
+	g.edgeCount++
 	return nil
 }
 
@@ -111,7 +111,7 @@ func (g *Graph) RemoveEdge(from, to VertexId) error {
 		}
 		delete(g.edges[to], from)
 	}
-	g.edgesCount--
+	g.edgeCount--
 	return nil
 }
 
@@ -130,8 +130,8 @@ func (g *Graph) IsEdge(from, to VertexId) bool {
 	return true
 }
 
-func (g *Graph) EdgesCount() int {
-	return g.edgesCount
+func (g *Graph) EdgeCount() int {
+	return g.edgeCount
 }
 
 func (g *Graph) GetEdgeValue(from, to VertexId) (int, error) {
