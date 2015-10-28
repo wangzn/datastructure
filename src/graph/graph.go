@@ -23,7 +23,7 @@ type Graph struct {
 
 func NewGraph() *Graph {
 	return &Graph{
-		edges: nil,
+		edges: make(map[VertexId]map[VertexId]int),
 	}
 }
 
@@ -38,6 +38,14 @@ func (g *Graph) TouchVertex(vertex VertexId) {
 	}
 }
 
+func (g *Graph) AddVertex(vertex VertexId) error {
+	if _, ok := g.edges[vertex]; ok {
+		return errors.New("Vertex have already exist")
+	} else {
+		g.edges[vertex] = make(map[VertexId]int)
+	}
+	return nil
+}
 func (g *Graph) RemoveVertex(vertex VertexId) error {
 	if _, ok := g.edges[vertex]; !ok {
 		return errors.New("Vertex does not exist")
