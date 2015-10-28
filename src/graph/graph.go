@@ -93,3 +93,50 @@ func (g *Graph) AddEdge(from, to VertexId, value int) error {
 	g.edgesCount++
 	return nil
 }
+
+func (g *Graph) RemoveEdge(from, to VertexId) error {
+	if !g.IsVertex(from) {
+		return errors.New("From vertex does not exist")
+	}
+	if !g.IsVertex(to) {
+		return errors.New("To vertex does not exist")
+	}
+	if _, ok := g.edges[from][to]; !ok {
+		return errors.New("Edge does not exist")
+	}
+	delete(g.edges[from], to)
+	if !g.isDirected {
+		if _, ok := g.edges[to][from]; !ok {
+			return errors.New("Edge to -> from does not exist")
+		}
+		delete(g.edges[to], from)
+	}
+	g.edgesCount--
+	return nil
+}
+
+func (g *Graph) IsEdge(from, to VertexId) bool {
+	if !g.IsVertex(from) || !g.IsVertex(to) {
+		return false
+	}
+	if _, ok := g.edges[from][to]; !ok {
+		return false
+	}
+	if !g.isDirected {
+		if _, ok := g.edges[to][from]; !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func (g *Graph) EdgesCount() int {
+	return g.edgesCount
+}
+
+func (g *Graph) GetEdgeValue(from, to VertexId) (int, error) {
+	if g.IsEdge(from, to) {
+		return g.edges[from][to], nil
+	}
+	return 0, errors.New("Edge does not exist")
+}
