@@ -6,6 +6,7 @@ import (
 )
 
 func TestBubble(t *testing.T) {
+	BubbleSort(make([]int, 0))
 	b := BubbleSort([]int{1})
 	a := []int{4, 1, 7, 0, 3, 2, 6, 5}
 	b = BubbleSort(a)
