@@ -1,6 +1,8 @@
 package insert
 
-import ()
+import (
+	"fmt"
+)
 
 func InsertSort(a []int) []int {
 	for i := 1; i < len(a); i++ {
@@ -11,6 +13,7 @@ func InsertSort(a []int) []int {
 			j--
 		}
 		a[j+1] = tmp
+		fmt.Println(a)
 	}
 	return a
 }
