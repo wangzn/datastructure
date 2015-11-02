@@ -10,18 +10,16 @@ func Sieve(n int) []int {
 		return ret
 	}
 	b := make([]bool, n+1)
-	for i := 0; i < n+1; i++ {
-		b[i] = true
-	}
-	for i := 2; float64(i) < math.Sqrt(float64(n)); i++ {
-		if b[i] {
+	sqrt := int(math.Sqrt(float64(n)))
+	for i := 2; i <= sqrt; i++ {
+		if !b[i] {
 			for j := 2; j*i < n+1; j++ {
-				b[j*i] = false
+				b[j*i] = true
 			}
 		}
 	}
 	for i := 2; i < n+1; i++ {
-		if b[i] {
+		if !b[i] {
 			ret = append(ret, i)
 		}
 	}
