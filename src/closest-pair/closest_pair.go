@@ -1,6 +1,7 @@
 package closest_pair
 
 import (
+	"fmt"
 	"math"
 	"sort"
 )
@@ -13,6 +14,83 @@ type Point struct {
 type Points []Point
 type ByY Points
 type ByX Points
+
+func (ps Points) Extreme() (minx, miny, maxx, maxy int) {
+	minx = math.MaxInt64
+	miny = minx
+	maxx = math.MinInt64
+	maxy = maxx
+	for _, p := range ps {
+		if p.x > maxx {
+			maxx = p.x
+		}
+		if p.y > maxy {
+			maxy = p.y
+		}
+		if p.x < minx {
+			minx = p.x
+		}
+		if p.y < miny {
+			miny = p.y
+		}
+	}
+	return
+}
+
+func (ps Points) Max(by string) int {
+	max := math.MinInt64
+	for _, p := range ps {
+		if by == "x" {
+			if p.x > max {
+				max = p.x
+			}
+		} else {
+			if p.y > max {
+				max = p.y
+			}
+		}
+	}
+	return max
+}
+
+func (ps Points) MaxY() int {
+	return ps.Max("y")
+}
+
+func (ps Points) MaxX() int {
+	return ps.Max("x")
+}
+
+func (ps Points) Print() {
+	minx, miny, maxx, maxy := ps.Extreme()
+	diffx := maxx - minx + 1
+	diffy := maxy - miny + 1
+	c := make([][]int, diffy)
+	for i := 0; i < len(c); i++ {
+		c[i] = make([]int, diffx)
+	}
+	for _, p := range ps {
+		x := maxy - p.y
+		y := p.x - minx
+		c[x][y] = 1
+	}
+
+	for i := 0; i < len(c); i++ {
+		fmt.Print("|")
+		for j := 0; j < len(c[i]); j++ {
+			if c[i][j] == 0 {
+				fmt.Print("   ")
+			} else {
+				fmt.Print(" * ")
+			}
+		}
+		fmt.Println()
+	}
+	for j := 0; j < len(c[0]); j++ {
+		fmt.Print("---")
+	}
+	fmt.Println()
+}
 
 func (ps Points) Len() int {
 	return len(ps)
