@@ -92,18 +92,6 @@ func (ps Points) Print() {
 	fmt.Println()
 }
 
-func (ps Points) Len() int {
-	return len(ps)
-}
-
-func (ps Points) Swap(i, j int) {
-	ps[i], ps[j] = ps[j], ps[i]
-}
-
-func (ps Points) Less(i, j int) bool {
-	return ps[i].x < ps[j].x
-}
-
 func (ps ByY) Len() int {
 	return len(ps)
 }
@@ -125,6 +113,17 @@ func (ps ByX) Swap(i, j int) {
 }
 
 func (ps ByX) Less(i, j int) bool {
+	return ps[i].x < ps[j].x
+}
+func (ps Points) Len() int {
+	return len(ps)
+}
+
+func (ps Points) Swap(i, j int) {
+	ps[i], ps[j] = ps[j], ps[i]
+}
+
+func (ps Points) Less(i, j int) bool {
 	return ps[i].x < ps[j].x
 }
 
