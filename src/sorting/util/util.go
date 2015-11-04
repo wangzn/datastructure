@@ -14,9 +14,6 @@ func GenArray(n int) []int {
 }
 
 func CheckArray(a []int) int {
-	if len(a) < 2 {
-		return 0
-	}
 	for i := 1; i < len(a); i++ {
 		if a[i] < a[i-1] {
 			return i
@@ -26,9 +23,6 @@ func CheckArray(a []int) int {
 }
 
 func CheckArrayDesc(a []int) int {
-	if len(a) < 2 {
-		return 0
-	}
 	for i := 1; i < len(a); i++ {
 		if a[i] > a[i-1] {
 			return i
