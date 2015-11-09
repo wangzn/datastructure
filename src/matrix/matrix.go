@@ -88,7 +88,7 @@ func (m *Matrix) Add(n *Matrix) error {
 
 func (m *Matrix) Sub(n *Matrix) error {
 	if m.Rows() != n.Rows() || m.Cols() != n.Cols() {
-		return errors.New("Matrix size does not match")
+		return errors.New("Two matrix sizes are not same")
 	}
 	for i := 0; i < m.Rows(); i++ {
 		for j := 0; j < m.Cols(); j++ {
@@ -101,7 +101,7 @@ func (m *Matrix) Sub(n *Matrix) error {
 
 func (m *Matrix) Multiply(n *Matrix) error {
 	if m.Rows() != n.Rows() || m.Cols() != n.Cols() {
-		return errors.New("Matrix size does not match")
+		return errors.New("Two matrix sizes are not same")
 	}
 	for i := 0; i < m.Rows(); i++ {
 		for j := 0; j < m.Cols(); j++ {
