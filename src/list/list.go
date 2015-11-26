@@ -62,8 +62,34 @@ func (l *List) Exist(v interface{}) bool {
 		if cur.value == v {
 			return true
 		}
+		cur = cur.next
 	}
 	return false
+}
+
+func (l *List) Delete(v interface{}) bool {
+	if l.head == nil {
+		return false
+	}
+	del := 0
+	for l.head.value == v {
+		l.head = l.head.next
+		l.length--
+		del++
+	}
+	cur := l.head
+	for cur.next != nil {
+		if cur.next.value == v {
+			cur.next = cur.next.next
+			l.length--
+			del++
+		}
+		cur = cur.next
+		if cur == nil {
+			break
+		}
+	}
+	return del > 0
 }
 
 func (l *List) String() string {
