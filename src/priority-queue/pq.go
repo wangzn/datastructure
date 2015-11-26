@@ -94,3 +94,7 @@ func (pq *PQ) ChangePriority(v interface{}, pri int) bool {
 	}
 	return found
 }
+
+func (i Item) Value() interface{} {
+	return i.value
+}
