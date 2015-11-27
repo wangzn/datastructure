@@ -23,6 +23,10 @@ func TestMain(t *testing.T) {
 	if str != "1|1|1|2|3|4|5" {
 		t.Error("List string error", str)
 	}
+	str = l.Head().String()
+	if str != "1|1|1|2|3|4|5" {
+		t.Error("Node string error", str)
+	}
 	if !l.Exist(1) {
 		t.Error("Can't find exist value 1")
 	}

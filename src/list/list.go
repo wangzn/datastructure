@@ -30,12 +30,26 @@ func (n *Node) Next() *Node {
 	return n.next
 }
 
+func (n *Node) String() string {
+	ss := make([]string, 0)
+	cur := n
+	for cur != nil {
+		ss = append(ss, fmt.Sprintf("%v", cur.value))
+		cur = cur.next
+	}
+	return strings.Join(ss, "|")
+}
+
 func NewList() *List {
 	return &List{nil, 0}
 }
 
 func (l *List) Length() int {
 	return l.length
+}
+
+func (l *List) Head() *Node {
+	return l.head
 }
 
 func (l *List) Add(v interface{}) {
