@@ -30,6 +30,10 @@ func (n *Node) Next() *Node {
 	return n.next
 }
 
+func (n *Node) SetNext(t *Node) {
+	n.next = t
+}
+
 func (n *Node) String() string {
 	ss := make([]string, 0)
 	cur := n
