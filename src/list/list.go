@@ -34,6 +34,28 @@ func (n *Node) SetNext(t *Node) {
 	n.next = t
 }
 
+func (n *Node) Reverse() (*Node, int) {
+	cnt := 0
+	var head, i, j, k *Node
+	if n.Next() == nil {
+		return n, 1
+	}
+	head = n
+	i = n
+	j = n.Next()
+	cnt++
+	for j != nil {
+		k = j.Next()
+		j.SetNext(i)
+
+		i = j
+		j = k
+		cnt++
+	}
+	head.SetNext(nil)
+	return i, cnt
+}
+
 func (n *Node) String() string {
 	ss := make([]string, 0)
 	cur := n
@@ -54,6 +76,10 @@ func (l *List) Length() int {
 
 func (l *List) Head() *Node {
 	return l.head
+}
+
+func (l *List) SetHead(n *Node) {
+	l.head = n
 }
 
 func (l *List) Add(v interface{}) {
@@ -108,6 +134,14 @@ func (l *List) Delete(v interface{}) bool {
 		}
 	}
 	return del > 0
+}
+
+func (l *List) Reverse() *List {
+	head := l.Head()
+	n, _ := head.Reverse()
+	ll := NewList()
+	ll.SetHead(n)
+	return ll
 }
 
 func (l *List) String() string {

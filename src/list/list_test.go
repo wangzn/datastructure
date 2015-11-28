@@ -48,4 +48,9 @@ func TestMain(t *testing.T) {
 	if !del {
 		t.Error("Delete fail")
 	}
+	ll := l.Reverse()
+	str = ll.String()
+	if str != "4|3|2" {
+		t.Error("Reverse error", str)
+	}
 }
