@@ -34,6 +34,10 @@ func (n *Node) SetNext(t *Node) {
 	n.next = t
 }
 
+func (n *Node) SetValue(v interface{}) {
+	n.value = v
+}
+
 func (n *Node) Reverse() (*Node, int) {
 	cnt := 0
 	var head, i, j, k *Node
