@@ -22,4 +22,9 @@ func TestBSearch(t *testing.T) {
 	if c := Search(a, 2); c != 0 {
 		t.Error("Search value error", c)
 	}
+	a = []int{1, 2, 4}
+	if c := Search(a, 1); c != 0 {
+		t.Error("Search value error", c)
+	}
+
 }

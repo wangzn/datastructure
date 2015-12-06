@@ -15,7 +15,7 @@ func Search(a []int, t int) int {
 	}
 	st := 0
 	ed := len(a)
-	for st < ed {
+	for st <= ed {
 		mid := (st + ed) / 2
 		if a[mid] == t {
 			return mid
