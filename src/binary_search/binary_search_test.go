@@ -18,4 +18,8 @@ func TestBSearch(t *testing.T) {
 	if c := Search(a, b); c != 2 {
 		t.Error("Seach value error", c)
 	}
+	a = []int{2, 3, 6, 7}
+	if c := Search(a, 2); c != 0 {
+		t.Error("Search value error", c)
+	}
 }

@@ -19,7 +19,7 @@ func Search(a []int, t int) int {
 		mid := (st + ed) / 2
 		if a[mid] == t {
 			return mid
-		} else if t < mid {
+		} else if t < a[mid] {
 			ed = mid - 1
 		} else {
 			st = mid + 1
